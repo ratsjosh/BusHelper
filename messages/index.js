@@ -1,13 +1,13 @@
 /*-----------------------------------------------------------------------------
-This template demonstrates how to use an IntentDialog with a LuisRecognizer to add 
-natural language support to a bot. 
+This template demonstrates how to use an IntentDialog with a LuisRecognizer to add
+natural language support to a bot.
 For a complete walkthrough of creating this type of bot see the article at
 https://aka.ms/abs-node-luis
 -----------------------------------------------------------------------------*/
 "use strict";
 var builder = require("botbuilder");
 var botbuilder_azure = require("botbuilder-azure");
-var path = require('path');
+var request = require('request');
 
 var useEmulator = (process.env.NODE_ENV == 'development');
 
@@ -26,7 +26,9 @@ var luisAppId = process.env.LuisAppId;
 var luisAPIKey = process.env.LuisAPIKey;
 var luisAPIHostName = process.env.LuisAPIHostName || 'westus.api.cognitive.microsoft.com';
 
-const LuisModelUrl = 'https://' + luisAPIHostName + '/luis/v1/application?id=' + luisAppId + '&subscription-key=' + luisAPIKey;
+var busUrl="http://datamall2.mytransport.sg/ltaodataservice/BusArrival?";
+var ltaApiKey="VfAAnVl4S4q+i1l4KzlLQg==";
+var generalReplies=["Hello to you too!\nHowmay I help you today?","Hey there! What would you like me to do today?","Hi!","Wassup?","Hello, how may I be of assistance?","How's it going?","How may I assist you today?","Hiya! How can I help you today?"];
 
 // Main dialog with LUIS
 var recognizer = new builder.LuisRecognizer(LuisModelUrl);
@@ -38,7 +40,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] })
     session.send('Sorry, I did not understand \'%s\'.', session.message.text);
 });
 
-bot.dialog('/', intents);    
+bot.dialog('/', intents);
 
 if (useEmulator) {
     var restify = require('restify');
@@ -46,8 +48,7 @@ if (useEmulator) {
     server.listen(3978, function() {
         console.log('test bot endpont at http://localhost:3978/api/messages');
     });
-    server.post('/api/messages', connector.listen());    
+    server.post('/api/messages', connector.listen());
 } else {
     module.exports = { default: connector.listen() }
 }
-
