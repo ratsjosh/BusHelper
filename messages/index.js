@@ -19,8 +19,7 @@ var connector = useEmulator ? new builder.ChatConnector() : new botbuilder_azure
 });
 
 var bot = new builder.UniversalBot(connector);
-bot.localePath(path.join(__dirname, './locale'));
-
+// bot.localePath(path.join(__dirname, './locale'));
 // Make sure you add code to validate these fields
 var luisAppId = process.env.LuisAppId;
 var luisAPIKey = process.env.LuisAPIKey;
